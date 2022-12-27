@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,16 +13,19 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
+// import { AuthContext } from '../../Context/Authprovider';
 
 
 
 
 const theme = createTheme();
 
-export default function SignIn() {
+export function Signin() {
+    // const { } = useContext(AuthContext);
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+
         console.log({
             name: data.get('name'),
             email: data.get('email'),
@@ -113,4 +116,4 @@ export default function SignIn() {
     );
 }
 
-// export default Signin;
+export default Signin;

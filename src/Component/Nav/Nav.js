@@ -16,34 +16,34 @@ import { Link } from 'react-router-dom';
 
 
 
-const pages = <>
-    <MenuItem>
-        <Link to={'/'} style={{ textDecoration: "none", color: "black" }}>
-            <Typography textAlign="center">HOME</Typography>
-        </Link>
-    </MenuItem>
-    <MenuItem>
-        <Link to={'/addtask'} style={{ textDecoration: "none", color: "black" }}>
-            <Typography textAlign="center"> ADD TASK</Typography>
-        </Link>
-    </MenuItem>
-    <MenuItem>
-        <Link to={'/task'} style={{ textDecoration: "none", color: "black" }}>
-            <Typography textAlign="center">MY TASK</Typography>
-        </Link>
-    </MenuItem>
-    <MenuItem>
-        <Link to={'/complete'} style={{ textDecoration: "none", color: "black" }}>
-            <Typography textAlign="center"> COMPLETED TASK</Typography>
-        </Link>
-    </MenuItem>
-    <MenuItem>
-        <Link to={'/login'} style={{ textDecoration: "none", color: "black" }}>
-            <Typography textAlign="center"> LOG IN</Typography>
-        </Link>
-    </MenuItem>
+// const pages = <>
+//     <MenuItem>
+//         <Link to={'/'} style={{ textDecoration: "none", color: "black" }}>
+//             <Typography textAlign="center">HOME</Typography>
+//         </Link>
+//     </MenuItem>
+//     <MenuItem>
+//         <Link to={'/addtask'} style={{ textDecoration: "none", color: "black" }}>
+//             <Typography textAlign="center"> ADD TASK</Typography>
+//         </Link>
+//     </MenuItem>
+//     <MenuItem>
+//         <Link to={'/task'} style={{ textDecoration: "none", color: "black" }}>
+//             <Typography textAlign="center">MY TASK</Typography>
+//         </Link>
+//     </MenuItem>
+//     <MenuItem>
+//         <Link to={'/complete'} style={{ textDecoration: "none", color: "black" }}>
+//             <Typography textAlign="center"> COMPLETED TASK</Typography>
+//         </Link>
+//     </MenuItem>
+//     <MenuItem>
+//         <Link to={'/login'} style={{ textDecoration: "none", color: "black" }}>
+//             <Typography textAlign="center"> LOG IN</Typography>
+//         </Link>
+//     </MenuItem>
 
-</>
+// </>
 const settings = ['Profile'];
 
 function Nav() {
@@ -117,8 +117,31 @@ function Nav() {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-
-                            {pages}
+                            <MenuItem>
+                                <Link to={'/'} style={{ textDecoration: "none", color: "black" }}>
+                                    <Typography textAlign="center">HOME</Typography>
+                                </Link>
+                            </MenuItem>
+                            <MenuItem>
+                                <Link to={'/addtask'} style={{ textDecoration: "none", color: "black" }}>
+                                    <Typography textAlign="center"> ADD TASK</Typography>
+                                </Link>
+                            </MenuItem>
+                            <MenuItem>
+                                <Link to={'/task'} style={{ textDecoration: "none", color: "black" }}>
+                                    <Typography textAlign="center">MY TASK</Typography>
+                                </Link>
+                            </MenuItem>
+                            <MenuItem>
+                                <Link to={'/complete'} style={{ textDecoration: "none", color: "black" }}>
+                                    <Typography textAlign="center"> COMPLETED TASK</Typography>
+                                </Link>
+                            </MenuItem>
+                            <MenuItem>
+                                <Link to={'/login'} style={{ textDecoration: "none", color: "black" }}>
+                                    <Typography textAlign="center"> LOG IN</Typography>
+                                </Link>
+                            </MenuItem>
                         </Menu>
                     </Box>
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -141,7 +164,31 @@ function Nav() {
                         LOGOO
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages}
+                        <MenuItem>
+                            <Link to={'/'} style={{ textDecoration: "none", color: "black" }}>
+                                <Typography textAlign="center">HOME</Typography>
+                            </Link>
+                        </MenuItem>
+                        <MenuItem>
+                            <Link to={'/addtask'} style={{ textDecoration: "none", color: "black" }}>
+                                <Typography textAlign="center"> ADD TASK</Typography>
+                            </Link>
+                        </MenuItem>
+                        <MenuItem>
+                            <Link to={'/task'} style={{ textDecoration: "none", color: "black" }}>
+                                <Typography textAlign="center">MY TASK</Typography>
+                            </Link>
+                        </MenuItem>
+                        <MenuItem>
+                            <Link to={'/complete'} style={{ textDecoration: "none", color: "black" }}>
+                                <Typography textAlign="center"> COMPLETED TASK</Typography>
+                            </Link>
+                        </MenuItem>
+                        <MenuItem>
+                            <Link to={'/login'} style={{ textDecoration: "none", color: "black" }}>
+                                <Typography textAlign="center"> LOG IN</Typography>
+                            </Link>
+                        </MenuItem>
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
