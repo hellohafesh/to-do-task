@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
-// import { AuthContext } from '../../Context/Authprovider';
+import { AuthContext } from '../../Context/Authprovider';
 
 
 
@@ -21,17 +21,37 @@ import { Link } from 'react-router-dom';
 const theme = createTheme();
 
 export function Signin() {
-    // const { } = useContext(AuthContext);
+    const { createUser, googleSignIn } = useContext(AuthContext);
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        const email = data.get('email');
+        const password = data.get('password');
+        createUser(
+            email, password
+        )
+            .then(result => {
+                const user = result.user;
+                console.log(user)
+            })
+            .catch(error => console.log(error));
 
-        console.log({
-            name: data.get('name'),
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        // console.log(email, password);
+        // console.log({
+        //     name: data.get('name'),
+        //     email: data.get('email'),
+        //     : ,
+        // });
     };
+
+    const handlegoogleSignIn = () => {
+        googleSignIn()
+            .then(result => {
+                const user = result.user;
+                console.log(user)
+            })
+            .catch(error => console.log(error));
+    }
 
     return (
         <div style={{ height: "80vh" }}>
@@ -83,10 +103,7 @@ export function Signin() {
                                 id="password"
                                 autoComplete="current-password"
                             />
-                            <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
-                                label="Remember me"
-                            />
+
                             <Button
                                 type="submit"
                                 fullWidth
@@ -96,17 +113,14 @@ export function Signin() {
                                 Sign In
                             </Button>
                             <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
+
                                 <Grid item>
                                     <Link to={'/login'}>
                                         {"Have an account? Log In"}
                                     </Link>
                                 </Grid>
                             </Grid>
+                            <Button variant="outlined" fullWidth onClick={handlegoogleSignIn} className='w-1/2' sx={{ mt: 3, mb: 2 }} > Sign In With Google </Button>
                         </Box>
                     </Box>
 

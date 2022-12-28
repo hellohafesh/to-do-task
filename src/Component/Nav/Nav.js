@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,48 +8,28 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-// import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../Context/Authprovider';
 
 
 
-// const pages = <>
-//     <MenuItem>
-//         <Link to={'/'} style={{ textDecoration: "none", color: "black" }}>
-//             <Typography textAlign="center">HOME</Typography>
-//         </Link>
-//     </MenuItem>
-//     <MenuItem>
-//         <Link to={'/addtask'} style={{ textDecoration: "none", color: "black" }}>
-//             <Typography textAlign="center"> ADD TASK</Typography>
-//         </Link>
-//     </MenuItem>
-//     <MenuItem>
-//         <Link to={'/task'} style={{ textDecoration: "none", color: "black" }}>
-//             <Typography textAlign="center">MY TASK</Typography>
-//         </Link>
-//     </MenuItem>
-//     <MenuItem>
-//         <Link to={'/complete'} style={{ textDecoration: "none", color: "black" }}>
-//             <Typography textAlign="center"> COMPLETED TASK</Typography>
-//         </Link>
-//     </MenuItem>
-//     <MenuItem>
-//         <Link to={'/login'} style={{ textDecoration: "none", color: "black" }}>
-//             <Typography textAlign="center"> LOG IN</Typography>
-//         </Link>
-//     </MenuItem>
-
-// </>
-const settings = ['Profile'];
 
 function Nav() {
+
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+
+    const { user, logout } = useContext(AuthContext);
+    // console.log(user);
+
+    const logOut = () => {
+        logout();
+        setAnchorElUser(null);
+    }
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -184,42 +164,57 @@ function Nav() {
                                 <Typography textAlign="center"> COMPLETED TASK</Typography>
                             </Link>
                         </MenuItem>
-                        <MenuItem>
+
+                    </Box>
+
+                    {user?.uid ?
+                        <Box sx={{ flexGrow: 0 }}>
+                            <Tooltip title="Open settings">
+                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                    <Avatar alt={user.displayName} src={user.photoURL} />
+                                </IconButton>
+                            </Tooltip>
+                            <Menu
+                                sx={{ mt: '45px' }}
+                                id="menu-appbar"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleCloseUserMenu}
+                            >
+
+                                <MenuItem onClick={handleCloseUserMenu}>
+                                    <Typography textAlign="center"> Profile</Typography>
+                                </MenuItem>
+                                <MenuItem onClick={logOut}>
+                                    <Typography textAlign="center"> Log Out</Typography>
+                                </MenuItem>
+
+                            </Menu>
+                        </Box>
+                        : <MenuItem>
                             <Link to={'/login'} style={{ textDecoration: "none", color: "black" }}>
                                 <Typography textAlign="center"> LOG IN</Typography>
                             </Link>
                         </MenuItem>
-                    </Box>
 
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </Box>
+
+                    }
+
+
+
+
+
+
+
                 </Toolbar>
             </Container>
         </AppBar>
