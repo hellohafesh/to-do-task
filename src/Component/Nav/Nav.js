@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../Context/Authprovider';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -21,13 +22,14 @@ function Nav() {
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+    const navigate = useNavigate();
 
     const { user, logout } = useContext(AuthContext);
     // console.log(user);
 
     const logOut = () => {
         logout();
+        navigate('/');
         setAnchorElUser(null);
     }
     const handleOpenNavMenu = (event) => {

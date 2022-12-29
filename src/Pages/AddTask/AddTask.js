@@ -70,7 +70,7 @@ export function AddTask() {
 
         const savetaskDB = (uid, task, details, date, imgurl, complete) => {
             const tasks = { uid, task, details, date, imgurl, complete };
-            fetch(' http://localhost:7000/addtask', {
+            fetch(' https://to-do-task-server-soumik825.vercel.app/addtask', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'

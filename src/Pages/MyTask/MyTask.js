@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { useQuery } from '@tanstack/react-query';
 import { AuthContext } from '../../Context/Authprovider';
 import Loader from '../../Component/Loader/Loader';
+import { Button } from '@mui/material';
 
 
 
@@ -16,23 +17,6 @@ const MyTask = () => {
 
     const { user } = useContext(AuthContext)
     const [loader, setLoader] = useState(null);
-    // const { data: tasks = [], refetch } = useQuery({
-    //     queryKey: ['tasks'],
-    //     queryFn: async () => {
-    //         try {
-    //             const res = await fetch(``, {
-
-    //             });
-    //             const data = await res.json();
-    //             console.log(data)
-    //             return data;
-    //         }
-    //         catch (error) {
-    //             console.log(error);
-    //         }
-
-    //     }
-    // })
 
     const { data: tasks = [], refetch } = useQuery({
 
@@ -40,7 +24,7 @@ const MyTask = () => {
         queryFn: async () => {
             try {
                 setLoader(true);
-                const res = await fetch(`http://localhost:7000/task/${user?.uid}`, {
+                const res = await fetch(`https://to-do-task-server-soumik825.vercel.app/task/${user?.uid}`, {
 
                 });
                 const data = await res.json();
@@ -57,42 +41,99 @@ const MyTask = () => {
         }
     })
 
+    const deleteDB = id => {
+        setLoader(true);
+        fetch(`https://to-do-task-server-soumik825.vercel.app/delete/${id}`, {
+            method: 'DELETE',
+
+
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.deletedCount > 0) {
+                    refetch();
+                    setLoader(false);
+
+                }
+            })
+        // console.log(id)
+
+    }
+
+    const setcompletedb = id => {
+        fetch(`https://to-do-task-server-soumik825.vercel.app/complete/${id}`, {
+            method: 'PUT'
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                refetch();
+            })
+    }
+
+
+
+
     if (loader) {
         return <Loader></Loader>
     }
 
     return (
-        <div>
-            <TableContainer component={Paper}>
+        <div className='min-h-[90vh] w-[100vw] md:w-[90vw] lg:w-[90vw] xl:w-[85vw] 2xl:w-[85vw] mx-auto'>
+            {tasks ? <>                <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Dessert (100g serving)</TableCell>
-                            <TableCell align="right">Calories</TableCell>
-                            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                        </TableRow>
-                    </TableHead>
+
                     <TableBody>
 
                         {
-                            tasks.map(task => <TableRow key={task._id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    aaa
-                                </TableCell>
-                                <TableCell align="right">aaaaaa</TableCell>
-                                <TableCell align="right">aaaa</TableCell>
-                                <TableCell align="right">aaaa</TableCell>
-                                <TableCell align="right">aaa</TableCell>
-                            </TableRow>)
+                            tasks?.map(task => <div key={task._id}>
+                                {!task.complete ? <TableRow
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell component="th" className='p-0 h-[50px] w-[70px]' scope="row">
+                                        {/* <Avatar alt="" src={task.imgurl} /> */}
+                                        <img className='h-[50px] w-[70px]' src={task.imgurl} alt="" />
+
+                                    </TableCell>
+                                    <TableCell align="right">{task.date}</TableCell>
+                                    <TableCell align="right"><Button
+                                        variant="contained"
+                                        sx={{ mt: 3, mb: 2 }}
+                                    >
+                                        Details
+                                    </Button></TableCell>
+                                    <TableCell align="right"><Button
+                                        variant="contained"
+                                        sx={{ mt: 3, mb: 2 }}
+                                        onClick={() => setcompletedb(task._id)}
+                                    >
+                                        Complete
+                                    </Button></TableCell>
+                                    <TableCell align="right"><Button
+                                        variant="contained"
+                                        sx={{ mt: 3, mb: 2 }}
+                                    >
+                                        Edit
+                                    </Button></TableCell>
+                                    <TableCell align="right"><Button
+                                        variant="contained"
+                                        sx={{ mt: 3, mb: 2 }} onClick={() => deleteDB(task._id)}
+                                    >
+                                        Delete
+                                    </Button></TableCell>
+                                </TableRow> : <div className=''> No Data Is Here</div>
+
+                                }
+                            </div>
+                            )
                         }
 
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </TableContainer>  </> : <h1>No Data</h1>
+            }
+
+
         </div>
     );
 }
