@@ -10,39 +10,42 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/Authprovider';
 
 
 
 const theme = createTheme();
 
-export default function SignIn() {
+export function SignIn() {
     const { signIn, googleSignIn } = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from?.pathname || '/';
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const email = data.get('email');
         const password = data.get('password');
-        signIn(
-            email, password
-        )
+        signIn(email, password)
             .then(result => {
                 const user = result.user;
-                console.log(user)
+                console.log(user);
+                navigate(from, { replace: true });
+
             })
             .catch(error => console.log(error));
 
-        // console.log({
-        //     email: data.get('email'),
-        //     password: data.get('password'),
-        // });
     };
     const handlegoogleSignIn = () => {
         googleSignIn()
             .then(result => {
                 const user = result.user;
-                console.log(user)
+                console.log(user);
+                navigate(from, { replace: true });
+
+
             })
             .catch(error => console.log(error));
     }
@@ -113,4 +116,4 @@ export default function SignIn() {
         </div>
     );
 }
-// export default Login;
+export default SignIn;

@@ -1,13 +1,5 @@
-// import React from 'react';
 
-// const AddTask = () => {
-//     return (
-//         <div className='min-h-[80vh]'>
-//             <h1>AddTask</h1>
-//         </div>
-//     );
-// };
-import * as React from 'react';
+import React, { useContext, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,29 +10,117 @@ import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import { useNavigate } from 'react-router-dom';
 // import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { AuthContext } from '../../Context/Authprovider';
+import Loader from '../../Component/Loader/Loader';
 
 
 
 const theme = createTheme();
 
 export function AddTask() {
+    const { user, } = useContext(AuthContext);
+    const [loader, setloader] = useState(null);
+
+    const navigate = useNavigate();
+
+
+    const imageHostingKey = process.env.REACT_APP_imagebb_key;
+    // console.log(imageHostingKey)
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            task: data.get('task'),
-            details: data.get('details'),
-            date: data.get('date'),
-            file: data.get('file'),
-        });
+        const task = data.get('task');
+        const details = data.get('details');
+        const date = data.get('date');
+        setloader(true);
+        const imagee = data.get('file');
+        console.log(imagee);
+
+        const fromData = new FormData();
+        fromData.append('image', imagee)
+        const url = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
+        fetch(url, {
+            method: 'POST',
+            body: fromData
+        })
+            .then(res => res.json())
+            .then(imageData => {
+                if (imageData.success) {
+                    const imgurl = imageData.data.url;
+                    console.log(data);
+                    const complete = false;
+                    savetaskDB(user?.uid, task, details, date, imgurl, complete);
+
+
+
+                }
+            })
+        // console.log({
+        //     task: data.get('task'),
+        //     details: data.get('details'),
+        //     
+        //     image: data.get('file'),
+        // });
+
+
+        const savetaskDB = (uid, task, details, date, imgurl, complete) => {
+            const tasks = { uid, task, details, date, imgurl, complete };
+            fetch(' http://localhost:7000/addtask', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(tasks)
+            })
+                .then(res => res.json())
+                .then(data => {
+
+                    // console.log('save user', data);
+
+                    if (data.acknowledged === true) {
+                        navigate('/task');
+                        setloader(false)
+                    }
+
+                })
+        }
     };
 
+
+
+    if (loader) {
+        return <Loader></Loader>
+    }
+
+
+    // const savetaskDB = (uid, task, details, date, imgurl, complete) => {
+    //     const task = { uid, task, details, date, imgurl, complete };
+    //     fetch('', {
+    //         method: 'POST',
+    //         headers: {
+    //             'content-type': 'application/json'
+    //         },
+    //         body: JSON.stringify(task)
+    //     })
+    //         .then(res => res.json())
+    //         .then(data => {
+
+    // console.log('save user', data);
+
+    //             if (data.acknowledged === true) {
+    //                 navigate('/task');
+    // }
+
+    // })
+
+
     return (
-        <div className='w-[100vw] md:w-[90vw] lg:w-[85vw] xl:w-[80vw] 2xl:w-[80vw] mx-auto'>
+        <div className='w-[100vw] md:w-[85vw] lg:w-[80vw] xl:w-[75vw] 2xl:w-[70vw] mx-auto'>
             <ThemeProvider theme={theme}>
                 <Grid container component="main" sx={{ height: '100vh' }}>
                     <CssBaseline />
@@ -129,4 +209,5 @@ export function AddTask() {
         </div>
     );
 }
+
 export default AddTask;
